@@ -35,10 +35,6 @@ namespace MyShop.Controllers
         public ActionResult<User> Post([FromBody] User user)
         {
             var res=userService.Post(user);
-            if (res==null)
-            {
-                return BadRequest();
-            }
             return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
         }
 
@@ -52,6 +48,13 @@ namespace MyShop.Controllers
 
             return NoContent();
 
+        }
+
+        [HttpPost]
+        [Route("password")]
+        public int PostPassword([FromQuery] string password)
+        {
+            return userService.PostPassword(password);
         }
 
         // PUT api/<Users>/5

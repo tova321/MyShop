@@ -15,14 +15,14 @@ namespace Services
         {
             this.userRepository=userRepository;
         }
-
         public User Post(User user)
         {
             var result = Zxcvbn.Core.EvaluatePassword(user.Password);
-
+           
             if (result.Score < 3)
             {
-                return null;
+                user.Password = "weak";
+                return user;
             }
             return userRepository.Post(user);
         }
@@ -33,6 +33,13 @@ namespace Services
             return userRepository.PostLogin(email, password);
         }
 
+
+        public int PostPassword(string password)
+        {
+            var result = Zxcvbn.Core.EvaluatePassword(password);
+
+            return result.Score;
+        }
         public User Put(int id, User userToUpdate)
         {
             return userRepository.Put(id, userToUpdate);

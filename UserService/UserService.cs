@@ -1,4 +1,4 @@
-﻿using MyShop;
+﻿using Entity;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using Repositories;
@@ -6,7 +6,7 @@ using Zxcvbn;
 
 namespace Services
 {
-    public class UserService : IUserService
+    public class UserService :IUserService
     {
 
         IUserRepository userRepository;
@@ -15,22 +15,21 @@ namespace Services
         {
             this.userRepository=userRepository;
         }
-        public User Post(User user)
+        public async Task<User> Post(User user)
         {
             var result = Zxcvbn.Core.EvaluatePassword(user.Password);
            
             if (result.Score < 3)
             {
-                user.Password = "weak";
-                return user;
+                return null;
             }
-            return userRepository.Post(user);
+            return await userRepository.Post(user);
         }
 
 
-        public User PostLogin(string email, string password)
+        public async Task<User> PostLogin(string email, string password)
         {
-            return userRepository.PostLogin(email, password);
+            return await userRepository.PostLogin(email, password);
         }
 
 
@@ -40,9 +39,15 @@ namespace Services
 
             return result.Score;
         }
-        public User Put(int id, User userToUpdate)
+        public async Task<User> Put(int id, User userToUpdate)
         {
-            return userRepository.Put(id, userToUpdate);
+            var result = Zxcvbn.Core.EvaluatePassword(userToUpdate.Password);
+
+            if (result.Score < 3)
+            {
+                return null;
+            }
+            return await userRepository.Put(id, userToUpdate);
         }
 
 

@@ -54,7 +54,7 @@ const signIn = async () => {
         alert(res);
         throw new Error();
     }
-
+  
     try {
         const responsePost = await fetch('api/Users', {
             method: 'post',
@@ -63,17 +63,14 @@ const signIn = async () => {
         });
         const dataPost = await responsePost.json();
         console.log('post data', dataPost);
-        if (dataPost.password == "weak") {
+        if (responsePost.status == 400) 
             throw new Error("the password is weak");
-        }
-
-        else alert("user added");
+         alert("user added");
     }
     catch (error) {
         alert(error)
-        if (!responsePost.ok) {
             throw new Error(`HTTP error! status ${responsePost.status}`)
-        }
+
     }
 
 
@@ -81,6 +78,9 @@ const signIn = async () => {
 }
 const logIn = async () => {
     const newUser = getDataForLogIn()
+    if (!newUser.email || !newUser.password){
+        return alert( "All fildes are required")
+    }
     try {
         const responsePost = await fetch(`api/Users/login/?email=${newUser.email}&password=${newUser.password}`, {
             method: 'post',
@@ -117,9 +117,13 @@ const updateDetails = async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newUser)
         });
+        if (responsePut.status==400) {
+            throw new Error("the password is weak");
+        }
         alert("Uset updated sucssesfully")
     }
-    catch {
+    catch (error){
+        alert(error)
         if (!responsePut.ok) {
             throw new Error(`HTTP error! status ${responsePut.status}`)
         }

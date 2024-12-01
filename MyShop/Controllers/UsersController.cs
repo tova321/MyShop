@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Services;
+using Entity;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MyShop.Controllers
@@ -20,7 +21,7 @@ namespace MyShop.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Shbat", "Shalom" };
+            return new string[] { "Shbat1", "Shalom" };
         }
 
         // GET api/<Users>/5
@@ -29,20 +30,21 @@ namespace MyShop.Controllers
         {
             return "value";
         }
-
         // POST api/<Users>
         [HttpPost]
-        public ActionResult<User> Post([FromBody] User user)
+        public async Task<ActionResult<User>> Post([FromBody] User user)
         {
-            var res=userService.Post(user);
-            return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
+            var res= await userService.Post(user);
+            if (res!=null) 
+                return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
+            return BadRequest();
         }
 
         [HttpPost]
         [Route("login")]
-        public ActionResult<User> PostLogin([FromQuery] string email, string password)
+        public async Task<ActionResult<User>> PostLogin([FromQuery] string email, string password)
         {
-            User newUser = userService.PostLogin(email,password);
+            var newUser =await userService.PostLogin(email,password);
             if (newUser != null)
                 return Ok(newUser);
 
@@ -54,15 +56,15 @@ namespace MyShop.Controllers
         [Route("password")]
         public int PostPassword([FromQuery] string password)
         {
-            return userService.PostPassword(password);
+            return  userService.PostPassword(password);
         }
 
         // PUT api/<Users>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User userToUpdate)
+        public async Task<ActionResult> Put(int id, [FromBody] User userToUpdate)
         {
-            userService.Put(id, userToUpdate);
-            if (userToUpdate != null)
+            var res= await userService.Put(id, userToUpdate);
+            if (res != null)
                 return Ok();
             return BadRequest();
 

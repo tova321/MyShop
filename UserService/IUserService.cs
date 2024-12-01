@@ -1,13 +1,13 @@
-﻿using MyShop;
+﻿using Entity;
 
 namespace Services
 {
     public interface IUserService
     {
         void Delete(int id);
-        User Post(User user);
-        User PostLogin(string email, string password);
+        Task<User> Post(User user);
+        Task<User> PostLogin(string email, string password);
         int PostPassword(string password);
-        User Put(int id, User userToUpdate);
+        Task<User> Put(int id, User userToUpdate);
     }
 }

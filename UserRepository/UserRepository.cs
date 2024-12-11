@@ -13,9 +13,11 @@ namespace Repositories
         }
         public async Task<User> Post(User user)                                           
         {
-              await userContext.Users.AddAsync(user);
+            //var res=await userContext.Users.AddAsync(user);
+            await userContext.Users.AddAsync(user);
               await userContext.SaveChangesAsync();
-              return user;
+            //return res- the created user with the id
+            return user;
         }
 
         public async Task<User> PostLogin(string email, string password)

@@ -49,11 +49,12 @@ namespace Services
             }
             return await userRepository.Put(id, userToUpdate);
         }
-
-
-        public void Delete(int id)
+        public async Task<User> GetById(int id)
         {
-
+            return await userRepository.GetById(id);
         }
+
+
+
     }
 }

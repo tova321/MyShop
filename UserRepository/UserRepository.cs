@@ -5,11 +5,16 @@ namespace Repositories
 {
     public class UserRepository : IUserRepository
     {
-        UserContext userContext;
+        ShopContext userContext;
 
-        public UserRepository(UserContext userContext)
+        public UserRepository(ShopContext userContext)
         {
             this.userContext = userContext;
+        }
+        public async Task<User> GetById(int id)
+        {
+            var user=await userContext.Users.FirstOrDefaultAsync(u=>u.UserId==id);
+            return user;
         }
         public async Task<User> Post(User user)                                           
         {
@@ -27,13 +32,12 @@ namespace Repositories
 
         public async Task<User> Put(int id, User userToUpdate)
         {
+            userToUpdate.UserId = id;
             userContext.Users.Update(userToUpdate);
             await userContext.SaveChangesAsync();
             return userToUpdate;
         }
 
-        public void Delete(int id)
-        {
-        }
+
     }
 }

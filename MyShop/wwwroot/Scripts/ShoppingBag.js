@@ -39,7 +39,7 @@ removeItem = (item) => {
     const index = orderItems.findIndex(o => o.name == item.name);
     orderItems.splice(index, 1)
     sessionStorage.setItem("cart", JSON.stringify(orderItems))
-    load()
+    window.location.reload()
 }
 
 placeOrder = async () => {
@@ -67,7 +67,7 @@ placeOrder = async () => {
         const dataPost = await responsePost.json();
         alert(`Your order number ${dataPost.id} has been successfully received`)
         sessionStorage.setItem("cart", JSON.stringify([]))
-        load()
+        window.location.reload()
     }
 
     catch (error) {

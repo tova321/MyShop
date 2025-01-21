@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MyShop;
+using NLog.Web;
 using Repositories;
 using Services;
 
@@ -22,6 +23,8 @@ builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.Use
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Host.UseNLog();
+
 
 var app = builder.Build();
 

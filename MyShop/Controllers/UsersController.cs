@@ -12,12 +12,14 @@ namespace MyShop.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> logger;
         IUserService userService;
         IMapper mapper;
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper, ILogger<UsersController>logger)
         {
             this.userService=userService;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
 
@@ -57,9 +59,9 @@ namespace MyShop.Controllers
             if (newUser != null)
             {
                 UserDTO fullUser = mapper.Map<User, UserDTO>(newUser);
+                logger.LogInformation($"Login attempted with User Name ,{email} and Password {password}");
                 return Ok(fullUser);
             }
-
 
             return NoContent();
 

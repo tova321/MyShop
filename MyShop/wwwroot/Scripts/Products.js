@@ -7,7 +7,7 @@ const cards = async () => {
     const products = await getProducts();
     document.getElementById("PoductList").innerHTML=''
     let tempCard = document.getElementById("temp-card");
-    products.forEach(product => {
+    products.forEach(product => {//send to a different func- drawOne
         let cloneProduct = tempCard.content.cloneNode(true);
         cloneProduct.querySelector("img").src = `../Images/${product.image}`
         cloneProduct.querySelector(".price").innerText = `$${product.price}`
@@ -26,7 +26,7 @@ const addToCart = (product) => {
 const categories =async () => {
     const categories = await getCategories();
     let tempCategory = document.getElementById("temp-category")
-    categories.forEach(category => {
+    categories.forEach(category => {//send to a different func- drawOne
         let cloneCategory = tempCategory.content.cloneNode(true);
         cloneCategory.querySelector(".OptionName").innerText = category.name;
         cloneCategory.querySelector(".opt").addEventListener("change", (e) => { filterCategories(e.currentTarget.checked, category.id) })
@@ -54,7 +54,7 @@ const getProducts = async () => {
     try {
         let url = `api/Products/?`;
         if (checkedCategories.length > 0)
-            for (var i = 0; i < checkedCategories.length; i++) {
+            for (var i = 0; i < checkedCategories.length; i++) {//map is nicer
                 url += `&categoryIds=${checkedCategories[i]}`
             }
         if (minPrice>0)

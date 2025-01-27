@@ -24,7 +24,7 @@ orderItem = () => {
     const orderItems = getOrderItems()
     let tempCard = document.getElementById("temp-row");
     document.querySelector("tbody").innerHTML=''
-    orderItems.forEach(item => {
+    orderItems.forEach(item => {//send to a different func- drawOne
         let cloneItem = tempCard.content.cloneNode(true);
         cloneItem.querySelector(".image").style.backgroundImage = `url(../../Images/${item.image})`
         cloneItem.querySelector(".itemName").innerText = item.name

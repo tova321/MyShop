@@ -25,6 +25,11 @@ namespace Repositories
             List<Product> products = await query.ToListAsync();
             return products;
         }
+        public async Task<double> GetProductPriceById(int id)
+        {
+            Product product = await shopContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            return product.Price;
+        }
 
 
     }

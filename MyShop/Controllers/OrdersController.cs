@@ -35,31 +35,6 @@ namespace MyShop.Controllers
             return NoContent();
         }
 
-        //// POST api/<OrdersController>
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] PostOrderDTO newOrder)
-        //{
-        //    var order = mapper.Map<PostOrderDTO, Order>(newOrder);
-        //    var order2 = await orderService.Post(order);
-        //    if (order2 != null)
-        //        return CreatedAtAction(nameof(Get), new { id = order2.Id }, order2);
-        //    return BadRequest();
-
-        //}
-
-        //// POST api/<OrderController>
-        //[HttpPost]
-        //public async Task<ActionResult<Order>> Post([FromBody] PostOrderDTO order)
-        //{
-
-        //    Order order1 = mapper.Map<PostOrderDTO, Order>(order);
-        //    Order order2 = await orderService.Post(order1);
-
-        //    return Ok(order);
-
-
-
-        //}
 
         // POST api/<OrderController>
         [HttpPost]
@@ -67,6 +42,8 @@ namespace MyShop.Controllers
         {
             Order order = mapper.Map<PostOrderDTO, Order>(orderDTO);
             Order newOrder = await orderService.Post(order);
+            if (newOrder == null)
+                return BadRequest();
             OrderDTO orderdto = mapper.Map<Order, OrderDTO>(newOrder);
             return CreatedAtAction(nameof(Get), new { id = orderdto.Id }, orderdto);
         }

@@ -48,11 +48,11 @@ const checkPassword = async () => {
 }
 const signIn = async () => {
     const newUser = getAllUserDetails();
-    const res = validationCheck(newUser);
-    if (res != "ok") {
-        alert(res);
-        throw new Error();
-    }
+    //const res = validationCheck(newUser);
+    //if (res != "ok") {
+    //    alert(res);
+    //    throw new Error();
+    //}
   
     try {
         const responsePost = await fetch('api/Users', {

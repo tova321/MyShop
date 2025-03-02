@@ -17,6 +17,7 @@ namespace Services
         }
         public async Task<User> Post(User user)
         {
+
             var result = Zxcvbn.Core.EvaluatePassword(user.Password);
            
             if (result.Score < 3)

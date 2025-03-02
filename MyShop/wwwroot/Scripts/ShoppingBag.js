@@ -1,4 +1,5 @@
 ﻿load = () => {
+    console.log(document.getElementById("totalAmount").innerText)
     orderItem()
     document.getElementById("itemCount").innerText = JSON.parse(sessionStorage.getItem("cart")).length
     const orderItems = getOrderItems()
@@ -6,9 +7,9 @@
 }
 getOrderItems = () => {
     const cart = JSON.parse(sessionStorage.getItem("cart"))
-    const quantity = cart.map(product=>
+    const cartWithQuantity = cart.map(product=>
     {
-        const quantity = cart.filter(i => i.id == product.id)
+        let quantity = cart.filter(i => i.id == product.id)
         return {
             ...product,
             quantity: quantity.length
@@ -16,8 +17,7 @@ getOrderItems = () => {
     }
     )
     //צריך לפלטר כך שכל מוצר יופיע פעם אחת
-    console.log(quantity)
-    return quantity;
+    return cartWithQuantity;
 
 }
 orderItem = () => {
@@ -52,11 +52,14 @@ placeOrder = async () => {
             throw new Error( "You are not logged in.\n To complete your order you will be redirected to log in")
 
         }
-
+        const cart = getOrderItems()
+       
         const order = {
+         
             UserId: Number(JSON.parse(sessionStorage.getItem("userId"))),
             Date: new Date(),
-            OrderItems: JSON.parse(sessionStorage.getItem("cart")).map(item => { return { productId: item.id, quantity: 2 } })
+            OrderItems: cart.map(item => { return { productId: item.id, quantity: item.quantity } }),
+            Sum: Number( document.getElementById("totalAmount").innerText)
         };
         const responsePost = await fetch(`api/Orders`, {
             method: 'post',
@@ -65,9 +68,15 @@ placeOrder = async () => {
         });
 
         const dataPost = await responsePost.json();
-        alert(`Your order number ${dataPost.id} has been successfully received`)
-        sessionStorage.setItem("cart", JSON.stringify([]))
-        window.location.reload()
+        console.log("dd:"+dataPost)
+        if (dataPost.status == 400)
+            alert(`Your order sum is uncorrect refresh adn try again`)
+        else {
+            alert(`Your order number ${dataPost.id} has been successfully received`)
+            sessionStorage.setItem("cart", JSON.stringify([]))
+            window.location.reload()
+        }
+
     }
 
     catch (error) {

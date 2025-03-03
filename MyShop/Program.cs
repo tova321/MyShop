@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MyShop;
 using NLog.Web;
+using PresidentsApp.Middlewares;
 using Repositories;
 using Services;
 
@@ -19,7 +20,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer("Server=SRV2\\PUPILS;Database=328300538_Shop;Trusted_Connection=True;TrustServerCertificate=True"));
+builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer("Server=DESKTOP-RHDMQSI;Database=328300538_Shop;Trusted_Connection=True;TrustServerCertificate=True", m=>m.MigrationsAssembly("MyShop")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,6 +36,8 @@ if (app.Environment.IsDevelopment()){
 }
 // Configure the HTTP request pipeline.
 app.UseRaitingMiddleware();
+
+app.UseErrorHandlingMiddleware();
 
 app.UseHttpsRedirection();
 

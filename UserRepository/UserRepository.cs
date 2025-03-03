@@ -20,7 +20,9 @@ namespace Repositories
         {
               await userContext.Users.AddAsync(user);
               await userContext.SaveChangesAsync();
+            if(user.UserId!=0)
               return user;
+            return null;
         }
 
         public async Task<User> PostLogin(string email, string password)

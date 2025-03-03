@@ -1,25 +1,23 @@
 ﻿load = () => {
-    console.log(document.getElementById("totalAmount").innerText)
+    debugger;
     orderItem()
     document.getElementById("itemCount").innerText = JSON.parse(sessionStorage.getItem("cart")).length
     const orderItems = getOrderItems()
-    document.getElementById("totalAmount").innerText = orderItems.reduce((sum, item) => sum + item.price, 0)
+    document.getElementById("totalAmount").innerText = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 }
 getOrderItems = () => {
-    const cart = JSON.parse(sessionStorage.getItem("cart"))
-    const cartWithQuantity = cart.map(product=>
-    {
-        let quantity = cart.filter(i => i.id == product.id)
-        return {
-            ...product,
-            quantity: quantity.length
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const quantity = cart.reduce((calculateArray, product) => {
+        const existingProduct = calculateArray.find(p => p.id === product.id);
+        if (existingProduct) {
+            existingProduct.quantity++;
+        } else {
+            calculateArray.push({ ...product, quantity: 1 });
         }
-    }
-    )
-    //צריך לפלטר כך שכל מוצר יופיע פעם אחת
-    return cartWithQuantity;
-
-}
+        return calculateArray;
+    }, []);
+    return quantity;
+};
 orderItem = () => {
     const orderItems = getOrderItems()
     let tempCard = document.getElementById("temp-row");
@@ -35,9 +33,12 @@ orderItem = () => {
     })
 }
 removeItem = (item) => {
-    let orderItems = getOrderItems()
-    const index = orderItems.findIndex(o => o.name == item.name);
-    orderItems.splice(index, 1)
+    let orderItems = JSON.parse(sessionStorage.getItem("cart"))
+    let index = orderItems.findIndex(o => o.name == item.name);
+    while (index != -1) {
+        orderItems.splice(index, 1)
+        index = orderItems.findIndex(o => o.name == item.name);
+    }
     sessionStorage.setItem("cart", JSON.stringify(orderItems))
     window.location.reload()
 }
@@ -53,13 +54,13 @@ placeOrder = async () => {
 
         }
         const cart = getOrderItems()
-       
+  
         const order = {
          
             UserId: Number(JSON.parse(sessionStorage.getItem("userId"))),
             Date: new Date(),
             OrderItems: cart.map(item => { return { productId: item.id, quantity: item.quantity } }),
-            Sum: Number( document.getElementById("totalAmount").innerText)
+            Sum: Number( document.getElementById("totalAmount").textContent)
         };
         const responsePost = await fetch(`api/Orders`, {
             method: 'post',
@@ -70,7 +71,7 @@ placeOrder = async () => {
         const dataPost = await responsePost.json();
         console.log("dd:"+dataPost)
         if (dataPost.status == 400)
-            alert(`Your order sum is uncorrect refresh adn try again`)
+            alert(`Your order sum is uncorrect refresh and try again`)
         else {
             alert(`Your order number ${dataPost.id} has been successfully received`)
             sessionStorage.setItem("cart", JSON.stringify([]))

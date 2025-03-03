@@ -25,7 +25,10 @@ namespace Repositories
         {
             await shopContext.Orders.AddAsync(order);
             await shopContext.SaveChangesAsync();
-            return order;
+            order=await shopContext.Orders.Include(p => p.User).FirstOrDefaultAsync(o=>o.Id==order.Id);  
+            if(order.Id!=0)
+                return order;
+            return null;
         }
        
        

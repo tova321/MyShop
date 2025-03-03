@@ -7,7 +7,7 @@ using Repositories;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//hi tova!!
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserService, UserService>();

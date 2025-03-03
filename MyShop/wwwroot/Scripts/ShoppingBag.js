@@ -1,5 +1,4 @@
 ﻿load = () => {
-    debugger;
     orderItem()
     document.getElementById("itemCount").innerText = JSON.parse(sessionStorage.getItem("cart")).length
     const orderItems = getOrderItems()

@@ -20,7 +20,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer("Server=DESKTOP-RHDMQSI;Database=328300538_Shop;Trusted_Connection=True;TrustServerCertificate=True", m=>m.MigrationsAssembly("MyShop")));
+builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("home")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

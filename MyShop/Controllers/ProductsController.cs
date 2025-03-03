@@ -11,12 +11,15 @@ namespace MyShop.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly ILogger<UsersController> logger;
         IProductService productService;
         IMapper mapper;
-        public ProductsController(IProductService productService, IMapper mapper)
+        public ProductsController(IProductService productService, IMapper mapper, ILogger<UsersController> logger)
         {
             this.productService = productService;
             this.mapper = mapper;
+            this.logger = logger;
+            logger.LogCritical("the aplication is up!");
         }
 
         // GET: api/<ProductsController>

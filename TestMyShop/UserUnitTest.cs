@@ -6,7 +6,7 @@ using Moq.EntityFrameworkCore;
 
 namespace TestMyShop
 {
-    public class UnitTest1
+    public class UserUnitTest
     {
         [Fact]
         public async Task GetUser_ValidCredentials_ReturnsUser()

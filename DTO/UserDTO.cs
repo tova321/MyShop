@@ -23,8 +23,5 @@ namespace DTO
                               string? FirstName,
 
                               [StringLength(20, ErrorMessage = "Last name can be between 2 till 20 characters", MinimumLength = 2)]
-                              string? LastName) 
-    {
-      
-    }
+                              string? LastName);
 }

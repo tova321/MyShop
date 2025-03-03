@@ -48,7 +48,7 @@ namespace MyShop.Controllers
                 return CreatedAtAction(nameof(GetById), new { id = userdto.UserId }, user);
             }
 
-            return BadRequest();
+            return BadRequest("The password is too wake");
         }
 
         [HttpPost]
@@ -83,7 +83,7 @@ namespace MyShop.Controllers
             if (updateUser != null)
                 return Ok();
 
-            return BadRequest();
+            return BadRequest("The password is too wake");
 
         }
 

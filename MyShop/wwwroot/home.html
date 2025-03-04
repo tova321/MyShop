@@ -14,6 +14,7 @@
 
     <!-- טופס כניסה -->
     <div class="loginForm">
+        <h2>Log In</h2>
         <input type="email" id="loginUserName" placeholder="userName" />
         <input type="password" id="loginPassword" placeholder="password" />
         <button onclick="logIn()">Log In</button>
@@ -22,12 +23,14 @@
 
     <!-- טופס רישום -->
     <div class="signIn" style="display: none;">
+        <h2>Log In</h2>
         <input type="email" id="userName" placeholder="userName" />
         <input type="password" id="password" placeholder="password" onblur="checkPassword()" />
         <progress id="progress" max="4" value="0"></progress>
         <input type="text" id="firstName" placeholder="First Name" />
         <input type="text" id="lastName" placeholder="Last Name" />
         <button onclick="signIn()">Sign In</button>
+        <a href="home.html">Back to the login page</a>
     </div>
 
 </body>

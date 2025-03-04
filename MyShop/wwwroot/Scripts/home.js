@@ -1,8 +1,7 @@
 ﻿const onNewUserClick = () => {
-    const loginForm = document.querySelector('.loginForm'); // טופס הכניסה
-    const signInForm = document.querySelector('.signIn'); // טופס הרישום
+    const loginForm = document.querySelector('.loginForm'); 
+    const signInForm = document.querySelector('.signIn');
 
-    // מסתיר את טופס הכניסה ומציג את טופס הרישום
     loginForm.style.display = "none";
     signInForm.style.display = "block";
 }
@@ -16,17 +15,15 @@ const hideUpdate = () => {
     hide.classList.remove("update");
 };
 const showUpdate = () => {
-    // בודק אם יש id של משתמש בסשן
     const userId = sessionStorage.getItem("userId");
 
     if (!userId) {
         alert("You must log in first")
 
-        window.location.href = "home.html"; // הכנס את שם הדף של טופס הכניסה
+        window.location.href = "home.html"; 
     } else {
-        // אם יש id, הצג את טופס העדכון
         const updateForm = document.querySelector(".update");
-        updateForm.style.display = "block"; // מציג את טופס העדכון
+        updateForm.style.display = "block"; 
     }
 };
 
@@ -54,7 +51,7 @@ const validationCheck = async (user) => {
     if (user.lastName.length < 2 || user.lastName.length > 20) 
         return "Last name must be between 2 to 20 characters";
     
-    if (user.password.length > 10)
+    if (user.password.length > 20)
         return "Password must be shorter than 20 characters";
     
     const level = await checkPassword();
@@ -69,9 +66,11 @@ const validationCheck = async (user) => {
 };
 
 const checkPassword = async () => {
+    const progress = document.querySelector("#progress");
+    const password = document.querySelector("#password").value;
+    if (password.length === 0)
+        return;
     try {
-        const progress = document.querySelector("#progress");
-        const password = document.querySelector("#password").value;
         const responsePost = await fetch(`api/Users/password/?password=${password}`, {
             method: 'post',
             headers: { 'Content-Type': 'application/json' }
@@ -101,6 +100,7 @@ const signIn = async () => {
         if (responsePost.status === 400)
             throw new Error("The password is weak");
         alert("User added");
+        window.location.href="home.html"
     } catch (error) {
         alert(error.message); 
     }
@@ -136,7 +136,7 @@ const updateDetails = async () => {
         return alert(res);
     }
     try {
-        const responsePut = await fetch(`api/Users/${JSON.parse( sessionStorage.getItem("id"))}`, {
+        const responsePut = await fetch(`api/Users/${JSON.parse( sessionStorage.getItem("userId"))}`, {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newUser)
@@ -145,6 +145,7 @@ const updateDetails = async () => {
             throw new Error("The password is weak");
         }
         alert("User updated successfully");
+        window.location.href="Products.html"
     } catch (error) {
         alert(`HTTP error! status ${error.message}`);
     }

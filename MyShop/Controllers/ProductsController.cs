@@ -19,7 +19,7 @@ namespace MyShop.Controllers
             this.productService = productService;
             this.mapper = mapper;
             this.logger = logger;
-            logger.LogCritical("the aplication is up!");
+            logger.LogInformation("the aplication is up!");
         }
 
         // GET: api/<ProductsController>

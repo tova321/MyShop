@@ -9,6 +9,7 @@ using Services;
 var builder = WebApplication.CreateBuilder(args);
 //hi tova!!
 // Add services to the container.
+builder.Services.AddMemoryCache();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -20,7 +21,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("home")));
+builder.Services.AddDbContext <ShopContext>(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("school")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

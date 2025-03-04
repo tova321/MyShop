@@ -2,6 +2,7 @@
 using DTO;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,28 +15,32 @@ namespace MyShop.Controllers
     {
         ICategoryService categoryService;
         IMapper mapper;
+        private readonly IMemoryCache cache; 
+        private const string CacheKey = "categoriesCache";
 
-        public CategoriesController(ICategoryService categoryService,IMapper mapper)
+        public CategoriesController(ICategoryService categoryService,IMapper mapper, IMemoryCache cache)
         {
             this.categoryService = categoryService;
             this.mapper = mapper;
+            this.cache = cache;
         }
 
         // GET: api/<CategoriesController>
         [HttpGet]
-        public async  Task<ActionResult<List<CategoryDTO>>> Get()
+        public async Task<ActionResult<List<CategoryDTO>>> Get()
         {
-            var categories = await categoryService.Get();
-            if (categories != null)
+            if (!cache.TryGetValue("categoriesCache", out List<Category> categories))
             {
-                var categoriesDTO = mapper.Map<List<Category>, List<CategoryDTO>>(categories);
-                return Ok(categoriesDTO);
+                categories = await categoryService.Get();
+                cache.Set("categoriesCache", categories, TimeSpan.FromMinutes(30));
             }
 
-            return BadRequest();
+            List<CategoryDTO> categoriesDTO = mapper.Map<List<Category>, List<CategoryDTO>>(categories);
+            return Ok(categoriesDTO);
+
         }
 
-      
+
 
     }
 }
